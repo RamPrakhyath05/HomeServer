@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "Building..."
 ./mvnw clean package -DskipTests
 
@@ -8,14 +7,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Copying jar..."
-sudo cp target/homeserver-0.0.1-SNAPSHOT.jar /opt/homeserver/homeserver.jar
+echo "Building Docker image..."
+docker build -t ramprakhyath/homeserver:latest .
 
-echo "Restarting service..."
-sudo systemctl restart homeserver
-
-echo "Waiting for server to start..."
-sleep 3
-
-echo "Checking status..."
-sudo systemctl status homeserver --no-pager -l
+echo "Pushing to Docker Hub..."
+docker push ramprakhyath/homeserver:latest
