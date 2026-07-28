@@ -1,3 +1,4 @@
+package com.annamareddys.homeserver.repository; 
 // Spring Framework Stereotype import
 import org.springframework.stereotype.Repository;
 

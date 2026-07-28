@@ -1,3 +1,4 @@
+package com.annamareddys.homeserver.controller; 
 // Controller talks to the service, so we need to import service
 import com.annamareddys.homeserver.service.FileService;
 
@@ -5,7 +6,7 @@ import com.annamareddys.homeserver.service.FileService;
 import java.util.List;
 
 // Spring Framework Stereotype import
-import org.springframework.stereotype.RestController;
+import org.springframework.web.bind.annotation.RestController;
 
 // Request Mapping and Get Mapping imports
 import org.springframework.web.bind.annotation.RequestMapping;
