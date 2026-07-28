@@ -1,5 +1,3 @@
-const SERVER = 'http://192.168.88.11:8080';
-
 // Theme
 function toggleTheme() {
     const html = document.documentElement;
@@ -19,7 +17,7 @@ function showToast(msg, type = 'success') {
 // Load files
 async function loadFiles() {
     try {
-        const res = await fetch(`${SERVER}/files`);
+        const res = await fetch(`/files`);
         const files = await res.json();
         const list = document.getElementById('file-list');
 
@@ -35,7 +33,7 @@ async function loadFiles() {
                     ${f}
                 </div>
                 <div class="file-actions">
-                    <a class="download-btn" href="${SERVER}/files/${f}" download="${f}">↓ download</a>
+                    <a class="download-btn" href="/files/${f}" download="${f}">↓ download</a>
                 </div>
             </div>
         `).join('');
@@ -50,7 +48,7 @@ async function uploadFile(file) {
     const form = new FormData();
     form.append('file', file);
     try {
-        const res = await fetch(`${SERVER}/files/upload`, { method: 'POST', body: form });
+        const res = await fetch(`/files/upload`, { method: 'POST', body: form });
         if (res.ok) {
             showToast(`${file.name} uploaded!`);
             loadFiles();
