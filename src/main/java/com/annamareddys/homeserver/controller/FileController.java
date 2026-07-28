@@ -1,56 +1,51 @@
-package com.annamareddys.homeserver.controller;
+// Controller talks to the service, so we need to import service
+import com.annamareddys.homeserver.service.FileService;
 
 // Data structure imports
 import java.util.List;
 
-// Importing essentials for a controller
-import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+// Spring Framework Stereotype import
+import org.springframework.stereotype.RestController;
+
+// Request Mapping and Get Mapping imports
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 
-//Importing service to talk to repository
-import com.annamareddys.homeserver.service.FileService;
-
-// Handling exceptions from service
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-// Since the resource won't be a downloadble file directly, we need to wrap it in a ResponseEntity with proper headers
+// Handling the resource that comes from the service
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 
+// Exception handling
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 @RestController
 @RequestMapping("")
+public class FileController{
+  private final FileService fileService;
+  FileController(FileService fileService){
+    this.fileService = fileService;
+  }
+  
+  @GetMapping("/alive")
+  public String checkHealth(){
+    return "All is well :)";
+  }
 
-public class FileController {
-    private final FileService fileService;
+  @GetMapping("/files")
+  public List<String> getAllFiles() throws IOException{
+    return fileService.listFiles();
+  }
 
-    FileController(FileService fileService) {
-        this.fileService = fileService;
+  @GetMapping("/files/{fileName}")
+  public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws MalformedURLException{
+    Resource resource = fileService.fetchFile(fileName);
+    if (resource==null){
+      return ResponseEntity.notFound().build();
     }
-
-    @GetMapping("/alive")
-    public String checkIfAlive() {
-        return "All is well :)";
-    }
-
-    // To list all the existing files on the server
-    @GetMapping("/files")
-    public List<String> getDir() throws IOException {
-        return fileService.listDir();
-    }
-
-    // To get a specific file using the filename
-    @GetMapping("/files/{filename}") // Path variable, so that the url can directly contain the filename
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) throws MalformedURLException {
-        Resource resource = fileService.fetchFile(filename);
-        if (resource == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-                .body(resource);
-    }
+    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"").body(resource);
+  }
 }
+
