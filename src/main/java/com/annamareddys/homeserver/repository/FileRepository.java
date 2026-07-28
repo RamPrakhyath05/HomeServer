@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import org.springframework.web.multipart.MultipartFile;
 
 // Files.list(dir) will basically return a sequence of elements, hence we need Stream<Path> 
 import java.util.stream.Stream;
@@ -28,11 +29,16 @@ public class FileRepository{
   } 
   
   public Resource fetch(String filename) throws MalformedURLException{
-  UrlResource resource = new UrlResource(dir.resolve(filename).toUri()); 
+    UrlResource resource = new UrlResource(dir.resolve(filename).toUri()); 
     if (!resource.exists() || !resource.isReadable()) {
       return null;
     }
     return resource;
+  }
+
+  public void store(MultipartFile file) throws IOException{
+    Path target = dir.resolve(file.getOriginalFilename());
+    Files.copy(file.getInputStream(), target);
   }
 
 }

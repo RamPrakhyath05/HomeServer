@@ -8,9 +8,14 @@ import java.util.List;
 // Spring Framework Stereotype import
 import org.springframework.web.bind.annotation.RestController;
 
+// Handle uploading file
+import org.springframework.web.multipart.MultipartFile;
+
 // Request Mapping and Get Mapping imports
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 // Handling the resource that comes from the service
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,5 +53,11 @@ public class FileController{
     }
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"").body(resource);
   }
+  
+  @PostMapping("/files/upload")
+  public void saveFile(@RequestParam MultipartFile file) throws IOException{
+    fileService.storeFile(file);  
+  }
+
 }
 

@@ -5,6 +5,9 @@ import com.annamareddys.homeserver.repository.FileRepository;
 // Spring Framework Stereotype import
 import org.springframework.stereotype.Service;
 
+// To handle incoming file to the server
+import org.springframework.web.multipart.MultipartFile;
+
 // Data Type imports
 import java.util.List;
 
@@ -35,5 +38,9 @@ public class FileService{
 
   public Resource fetchFile(String filename) throws MalformedURLException{
     return fileRepository.fetch(filename);
+  }
+
+  public void storeFile(MultipartFile file) throws IOException{
+    fileRepository.store(file);
   }
 }
