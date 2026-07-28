@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeserver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🖥</div>
+        homeserver
+    </div>
+    <div class="header-right">
+        <div class="status">
+            <div class="status-dot"></div>
+            online
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">☀ light</button>
+    </div>
+</header>
+
+<main>
+    <div class="upload-zone" id="upload-zone">
+        <div style="font-size: 1.5rem;">📁</div>
+        <p>Drag and drop a file here, or click to select</p>
+        <button class="upload-btn" onclick="document.getElementById('file-input').click()">Choose File</button>
+        <input type="file" id="file-input" onchange="uploadFile(this.files[0])">
+    </div>
+
+    <div class="section-header">
+        <span class="section-title">Files</span>
+        <button class="refresh-btn" onclick="loadFiles()">↻ refresh</button>
+    </div>
+
+    <div class="file-list" id="file-list">
+        <div class="empty-state">Loading files...</div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
