@@ -27,6 +27,10 @@ import org.springframework.http.HttpHeaders;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+// Enabling Cross Origin
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("")
 public class FileController{
