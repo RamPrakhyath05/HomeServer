@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 // Handling the resource that comes from the service
@@ -63,9 +64,9 @@ public class FileController{
     fileService.storeFile(file);  
   }
 
-  @PostMapping("/files/delete")
-  public void removeFile(String fileName) throws IOException{
-    fileService.deleteFile(fileName);  
+  @DeleteMapping("/files/{fileName}")
+  public void removeFile(@PathVariable String fileName) throws IOException {
+    fileService.deleteFile(fileName);
   }
 
 }
