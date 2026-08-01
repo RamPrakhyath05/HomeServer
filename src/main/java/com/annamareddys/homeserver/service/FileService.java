@@ -43,4 +43,8 @@ public class FileService{
   public void storeFile(MultipartFile file) throws IOException{
     fileRepository.store(file);
   }
+
+  public void deleteFile(String filename) throws IOException{
+    fileRepository.delete(filename);
+  }
 }

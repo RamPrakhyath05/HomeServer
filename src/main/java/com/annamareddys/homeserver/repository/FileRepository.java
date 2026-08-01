@@ -41,5 +41,9 @@ public class FileRepository{
     Files.copy(file.getInputStream(), target);
   }
 
+  public void delete(String filename) throws IOException{
+    Path target = dir.resolve(filename);
+    Files.delete(target);
+  }
 }
 

@@ -63,5 +63,10 @@ public class FileController{
     fileService.storeFile(file);  
   }
 
+  @PostMapping("/files/delete")
+  public void removeFile(String fileName) throws IOException{
+    fileService.deleteFile(fileName);  
+  }
+
 }
 

@@ -37,6 +37,18 @@ async function loadFiles() {
                 </div>
             </div>
         `).join('');
+        list.innerHTML = files.map(f => `
+            <div class="file-item">
+                <div class="file-name">
+                    <span class="file-icon">📄</span>
+                    ${f}
+                </div>
+                <div class="file-actions">
+                    <a class="download-btn" href="/files/${f}" download="${f}">↓ download</a>
+                    <button class="delete-btn" onclick="deleteFile('${f}')">🗑</button>
+                </div>
+            </div>
+        `).join('');
     } catch (e) {
         showToast('Failed to load files', 'error');
     }
@@ -57,6 +69,21 @@ async function uploadFile(file) {
         }
     } catch (e) {
         showToast('Upload failed', 'error');
+    }
+}
+
+// Delete
+async function deleteFile(filename) {
+    try {
+        const res = await fetch(`/files/${filename}`, { method: 'DELETE' });
+        if (res.ok) {
+            showToast(`${filename} deleted!`);
+            loadFiles();
+        } else {
+            showToast('Delete failed', 'error');
+        }
+    } catch (e) {
+        showToast('Delete failed', 'error');
     }
 }
 
