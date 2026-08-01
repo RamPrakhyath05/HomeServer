@@ -1,5 +1,5 @@
 # HomeServer
-A personal file server built on an old laptop, running a Spring Boot REST API in Docker. Accessible on the local network at home, and remotely via Tailscale.
+A personal file server built on an old laptop, running a Spring Boot REST API in Docker. Accessible on the local network at home.
 
 ---
 
@@ -13,8 +13,6 @@ A personal file server built on an old laptop, running a Spring Boot REST API in
 | Containerization | Docker                                             |
 | CI/CD            | GitHub Actions                                     |
 | Auto-updates     | Watchtower                                         |
-| Remote Access    | Tailscale (planned)                                |
-| Auth             | JWT (planned)                                      |
 
 ---
 
@@ -40,10 +38,7 @@ Dev Machine (Fedora)
                                         │  Homeserver  │  ← serves the REST API
                                         └──────────────┘
                                                │
-                                ───────────────────────────────
-                                │                             │
-                           Home Network                  Tailscale VPN
-                                                   (planned, for outside access)
+                                          Home Network
 ```
 
 ---
@@ -75,9 +70,9 @@ GitHub Actions automatically builds the jar, packages it into a Docker image, an
 
 ---
 
-## Server Setup (One Time)
+## Server Setup
 
-Run these on the server laptop once:
+Run these on the server laptop only once:
 
 ```bash
 # Run the homeserver container
@@ -102,16 +97,26 @@ On boot, systemd starts Docker automatically, which in turn restarts all contain
 
 ---
 
-## Project Structure (Currently)
+## Project Structure
 
 ```
 src/
 └── main/
-    └── java/com/annamareddys/homeserver/
-        ├── controller/         # HTTP layer, handles requests
-        ├── service/            # Business logic
-        └── repository/         # Filesystem operations
+    ├── java/com/annamareddys/homeserver/
+    │   ├── controller/         # HTTP layer, handles requests
+    │   ├── service/            # Business logic
+    │   └── repository/         # Filesystem operations
+    └── resources/
+        └── static/             # Frontend (HTML, CSS, JS)
 ```
+
+---
+
+
+## Frontend
+Served statically from Spring Boot at `http://192.168.x.x:8080`.
+Built with vanilla HTML, CSS and JavaScript. Features drag and drop upload, file listing, download and delete with dark/light mode toggle.
+
 
 ---
 
@@ -119,41 +124,41 @@ src/
 
 ### Health Check
 ```
-GET /response/checkhealth
+GET /alive
 ```
 Returns `All is well :)` if the server is running.
 
-### File Upload _(planned)_
+### File Upload
 ```
 POST /files/upload
 ```
 
-### File Download _(planned)_
+### File Download
 ```
-GET /files/download/{filename}
-```
-
-### List Files _(planned)_
-```
-GET /files/list
+GET /files/{filename}
 ```
 
-### Delete File _(planned)_
+### List Files
+```
+GET /files
+```
+
+### Delete File
 ```
 DELETE /files/{filename}
 ```
 
 ---
 
-## Security _(planned)_
-- JWT Authentication on all file endpoints
-- Tailscale VPN for remote access — server is invisible to the public internet
-
----
-
 ## Storage
 
 Files are stored in `/homeserver-files` on the server laptop, mounted as a Docker volume.
+
+---
+
+## Cron Jobs
+- System update on every boot: `@reboot /usr/bin/pacman -Syu --noconfirm`
+- Shutdown at 10 PM every night: `0 22 * * * /sbin/shutdown -h now`
 
 ---
 
