@@ -55,21 +55,28 @@ async function loadFiles() {
 }
 
 // Upload
-async function uploadFile(file) {
+function uploadFile(file) {
     if (!file) return;
     const form = new FormData();
     form.append('file', file);
-    try {
-        const res = await fetch(`/files/upload`, { method: 'POST', body: form });
-        if (res.ok) {
+    const xhr = new XMLHttpRequest();
+    xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            showToast(`Uploading... ${percent}%`);
+        }
+    });
+    xhr.addEventListener('load', () => {
+        if (xhr.status === 200) {
             showToast(`${file.name} uploaded!`);
             loadFiles();
         } else {
             showToast('Upload failed', 'error');
         }
-    } catch (e) {
-        showToast('Upload failed', 'error');
-    }
+    });
+    xhr.addEventListener('error', () => showToast('Upload failed', 'error'));
+    xhr.open('POST', '/files/upload');
+    xhr.send(form);
 }
 
 // Delete
