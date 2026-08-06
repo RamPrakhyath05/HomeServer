@@ -21,7 +21,6 @@
         <button class="theme-toggle" onclick="toggleTheme()">☀ light</button>
     </div>
 </header>
-
 <main>
     <div class="upload-zone" id="upload-zone">
         <div style="font-size: 1.5rem;">📁</div>
@@ -30,19 +29,25 @@
         <input type="file" id="file-input" onchange="uploadFile(this.files[0])">
     </div>
 
-    <div class="section-header">
-        <span class="section-title">Files</span>
-        <button class="refresh-btn" onclick="loadFiles()">↻ refresh</button>
-    </div>
-
-    <div class="file-list" id="file-list">
-        <div class="empty-state">Loading files...</div>
+    <div class="split-pane">
+        <div class="left-pane">
+            <div class="section-header">
+                <span class="section-title">Files</span>
+                <button class="refresh-btn" onclick="loadFiles()">↻ refresh</button>
+            </div>
+            <div class="file-list" id="file-list">
+                <div class="empty-state">Loading files...</div>
+            </div>
+        </div>
+        <div class="right-pane" id="preview-pane">
+            <div class="preview-empty">
+                <div style="font-size: 2rem;">👁</div>
+                <p>Click a file to preview</p>
+            </div>
+        </div>
     </div>
 </main>
-
 <div class="toast" id="toast"></div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
