@@ -44,7 +44,7 @@ async function previewFile(filename) {
 
     const pane = document.getElementById('preview-pane');
     const type = getType(filename);
-    const url = `/files/${encodeURIComponent(filename)}`;
+    const url = `/files/preview/${encodeURIComponent(filename)}`;
 
     let content = '';
 

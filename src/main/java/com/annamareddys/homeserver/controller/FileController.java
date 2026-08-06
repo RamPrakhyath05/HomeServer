@@ -69,5 +69,15 @@ public class FileController{
     fileService.deleteFile(fileName);
   }
 
+  @GetMapping("/files/preview/{fileName}")
+  public ResponseEntity<Resource> previewFile(@PathVariable String fileName) throws MalformedURLException {
+      Resource resource = fileService.fetchFile(fileName);
+      if (resource == null) {
+          return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok()
+              .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+              .body(resource);
+  }
 }
 
