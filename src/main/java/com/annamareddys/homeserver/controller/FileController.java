@@ -75,9 +75,11 @@ public class FileController{
       if (resource == null) {
           return ResponseEntity.notFound().build();
       }
+      String contentType = Files.probeContentType(Paths.get(fileName));
+      if (contentType == null) contentType = "application/octet-stream";
       return ResponseEntity.ok()
               .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+              .header(HttpHeaders.CONTENT_TYPE, contentType)
               .body(resource);
   }
 }
-
