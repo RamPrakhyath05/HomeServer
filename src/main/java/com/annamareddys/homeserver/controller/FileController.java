@@ -54,7 +54,7 @@ public class FileController{
   }
 
   @GetMapping("/files/{fileName}")
-  public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws MalformedURLException{
+  public ResponseEntity<Resource> getFile(@PathVariable String fileName) throws IOException{
     Resource resource = fileService.fetchFile(fileName);
     if (resource==null){
       return ResponseEntity.notFound().build();
