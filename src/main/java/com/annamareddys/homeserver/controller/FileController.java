@@ -24,6 +24,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 
+// For detecting file content type during preview
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 // Exception handling
 import java.io.IOException;
 import java.net.MalformedURLException;
