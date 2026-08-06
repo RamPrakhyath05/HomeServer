@@ -30,7 +30,6 @@ import java.nio.file.Paths;
 
 // Exception handling
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 // Enabling Cross Origin
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -74,7 +73,7 @@ public class FileController{
   }
 
   @GetMapping("/files/preview/{fileName}")
-  public ResponseEntity<Resource> previewFile(@PathVariable String fileName) throws MalformedURLException {
+  public ResponseEntity<Resource> previewFile(@PathVariable String fileName) throws IOException {
       Resource resource = fileService.fetchFile(fileName);
       if (resource == null) {
           return ResponseEntity.notFound().build();
